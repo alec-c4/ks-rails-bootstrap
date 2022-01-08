@@ -1,0 +1,17 @@
+<div class="container text-center">
+  <ul class="list-inline">
+    <li class="list-inline-item">
+    (c) <%= Date.today.year %>
+  </li>
+
+  <li class="list-inline-item">
+    <%= link_to t(:"navigation.privacy_page"), privacy_path %>
+  </li>
+
+  <li class="list-inline-item">
+    <%= link_to t(:"navigation.terms_page"), terms_path %>
+  </li>
+</ul>  
+</div>
+
+<%= render "layouts/locale_switch" %>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="<%= I18n.locale.to_s %>">
+  <head>
+    <title>APPLICATION Admin</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+  <body>
+    <header>
+      <%= render "layouts/header" %>
+    </header>
+    <main class="container">
+      <%= render "layouts/flash" %>
+      <div class="row">
+        <div class="col-2">
+          <%= render "layouts/admin_navigation" %>         
+        </div>
+        <div class="col">
+          <%= yield %>          
+        </div>        
+      </div>
+
+    </main>
+    <footer>
+      <%= render "layouts/footer" %>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+@import 'bootstrap/scss/bootstrap';
+
+#devise-form {
+  width: 100%;
+  max-width: 30%;
+  margin: auto;
+  padding: 15px;
+}
+
+.form {
+  .form-inputs {
+    padding-bottom: 15px;
+
+    .form-group {
+      margin-top: 15px;
+    }
+  }
+
+  .form-actions {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+
+span.hint {
+	font-size: 12px;
+}
