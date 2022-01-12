@@ -1,4 +1,10 @@
-module FlashHelper
+# frozen_string_literal: true
+
+class Elements::FlashComponent < ViewComponent::Base
+  def initialize(*)
+    super
+  end
+
   def flash_class(level)
     case level
     when "notice"

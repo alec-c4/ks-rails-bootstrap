@@ -13,7 +13,7 @@
   <body data-turbo="false" class="text-center">
     <header></header>
     <main>
-        <%= render "layouts/flash" %>
+        <%= render Elements::FlashComponent.new %>
         <%= yield %>
     </main>
     <footer></footer>
