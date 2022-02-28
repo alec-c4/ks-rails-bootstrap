@@ -53,7 +53,7 @@ You can generate active record encryption keys with following command
 bin/rails db:encryption:init
 ```
 
-8. Configure application in  `config/settings.yml` and `config/settings/*.yml`
+8. Configure application in  `config/settings.yml`
 
 9. Configure rack-attack using following [guide](https://expeditedsecurity.com/blog/ultimate-guide-to-rack-attack/)
 
@@ -68,7 +68,7 @@ bin/rails db:encryption:init
 - [VSCode](https://code.visualstudio.com/) configuration files
 - postgresql database connector
 - timezone detection with [jstz](https://github.com/iansinnott/jstz)
-- [Sidekiq](https://github.com/mperham/sidekiq) for background jobs
+- [Good Job](https://github.com/bensheldon/good_job) for background jobs
 - [strong_migrations](https://github.com/ankane/strong_migrations)
 - authentication with [devise](https://github.com/heartcombo/devise) and [devise-pwned_password](https://github.com/michaelbanfield/devise-pwned_password) + google auth
 - [pretender](https://github.com/ankane/pretender)
@@ -91,7 +91,6 @@ bin/rails db:encryption:init
 - [rack-attack](https://github.com/rack/rack-attack) to prevent bruteforce and DDoS attacks 
 - [authrail](https://github.com/ankane/authtrail) to track login attempts
 - [lefthook](https://github.com/evilmartians/lefthook) with pre-commit run of rspec, brakeman, standardjs, standardrb and erblint
-- [logstop](https://github.com/ankane/logstop) to avoid sensitive information and noise in the application logs
 - [semantic_logger](https://github.com/reidmorrison/semantic_logger) as a highly configurable logging system
 - [simplecov](https://github.com/simplecov-ruby/simplecov) for test coverage research
 - [mailkick](https://github.com/ankane/mailkick)

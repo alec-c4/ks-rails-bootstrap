@@ -34,23 +34,37 @@ end
 def apply_app_changes
   # setup generators
   copy_file "config/initializers/generators.rb", force: true
+  copy_file "config/initializers/semantic_logger.rb", force: true
 
   # setup Procfile
   copy_file "Procfile.dev", force: true
 
   # setup frontend with timezone support
   run "yarn add jstz local-time"
+  run "yarn add chokidar standard -D"
+  copy_file "esbuild-dev.config.js", force: true
   directory "app/javascript", force: true
   copy_file ".erb-lint.yml", force: true
 
-  # setup_sidekiq
-  copy_file "config/initializers/sidekiq.rb", force: true
-  copy_file "config/sidekiq.yml", force: true
+  # setup good_job
+  gsub_file "package.json", /"build": "esbuild app\/javascript\/\*\.\* --bundle --sourcemap --outdir=app\/assets\/builds",\n/ do
+    <<-'CODE'
+"build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
+    "build:js": "node esbuild-dev.config.js",
+    CODE
+  end
+
+  # setup good_job
+  generate "good_job:install"
+  inject_into_file "config/application.rb", after: /require "rails\/test_unit\/railtie"\n/ do
+    <<-'RUBY'
+  require "good_job/engine"
+    RUBY
+  end
 
   # setup main configuration
 
-  generate "config:install -s"
-  directory "config/settings", force: true
+  copy_file "config/settings.yml", force: true
 
   generate "meta_tags:install"
 
@@ -68,6 +82,9 @@ def apply_app_changes
 
   inject_into_file "config/application.rb", after: /config\.generators\.system_tests = nil\n/ do
     <<-'RUBY'
+  # use config file
+  config.settings = config_for(:settings)
+
      # use custom error pages
      config.exceptions_app = routes
 
@@ -82,9 +99,9 @@ def apply_app_changes
     # Mail
     config.action_mailer.delivery_method = :letter_opener_web
     config.action_mailer.default_url_options = {
-      host: Settings.mailer.default_url.host,
-      port: Settings.mailer.default_url.port,
-      protocol: Settings.mailer.default_url.protocol
+      host: Rails.configuration.settings.mailer_default_url_host,
+      port: Rails.configuration.settings.mailer_default_url_port,
+      protocol: Rails.configuration.settings.mailer_default_url_protocol
     }
     config.action_mailer.perform_deliveries = true
 
@@ -124,9 +141,9 @@ def apply_app_changes
 
     # Mailer
     config.action_mailer.default_url_options = {
-      host: Settings.mailer.default_url.host,
-      port: Settings.mailer.default_url.port,
-      protocol: Settings.mailer.default_url.protocol
+      host: Rails.configuration.settings.mailer_default_url_host,
+      port: Rails.configuration.settings.mailer_default_url_port,
+      protocol: Rails.configuration.settings.mailer_default_url_protocol
     }
     RUBY
   end
@@ -154,8 +171,6 @@ def apply_app_changes
   end
 
   gsub_file "config/environments/production.rb", /STDOUT/, "$stdout"
-  gsub_file "config/puma.rb", /fetch("RAILS_MAX_THREADS") { 5 }/, 'fetch("RAILS_MAX_THREADS", 5)'
-  gsub_file "config/puma.rb", /fetch("PORT") { 3000 }/, 'fetch("PORT", 3000)'
 
   run "cp config/environments/production.rb config/environments/staging.rb"
 
@@ -209,7 +224,7 @@ def apply_app_changes
   copy_file "migrations/mailkick.rb", mailkick_migration_file, force: true
 
   # setup noticed
-  generate "noticed:model"
+  generate "migration CreateNotifications"
   noticed_migration_file = (Dir["db/migrate/*_create_notifications.rb"]).first
   copy_file "migrations/noticed.rb", noticed_migration_file, force: true
 
@@ -228,15 +243,17 @@ def apply_app_changes
   directory "app/controllers", force: true
   directory "app/components", force: true
   directory "app/helpers", force: true
+  directory "app/interactions", force: true
   directory "app/jobs", force: true
   directory "app/mailers", force: true
   directory "app/models", force: true
   directory "app/views", force: true
   directory "app/policies", force: true
-  copy_file "app/assets/stylesheets/application.bootstrap.scss", force: true
+  directory "app/assets/stylesheets", force: true
   copy_file "config/initializers/simple_form_bootstrap.rb", force: true
   copy_file "config/routes.rb", force: true
   copy_file "config/puma.rb", force: true
+  copy_file "config/initializers/active_interaction.rb", force: true
 
   # setup specs
   generate "rspec:install"
@@ -266,7 +283,7 @@ def show_post_install_message
   Next steps:
   1 - add creadentials as described in README.md
   2 - configure database connections
-  3 - configure application options in config/settings
+  3 - configure application options in config/settings.yml
   4 - run following command \n
   git init && git add . &&  git commit -am 'Initial import' && lefthook install \n
   
