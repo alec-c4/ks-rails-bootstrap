@@ -34,7 +34,7 @@
   <%- if current_user.identities.map(&:provider).include?("google") %>
     <%= link_to identities_path(provider: 'google'),
                 data: { turbo_method: 'delete', turbo_confirm: t('devise.social.are_you_sure_to_disconnect') },
-                 class: 'btn btn-warning' } do %>
+                 class: 'btn btn-warning' do %>
       <span><%= t('devise.social.disconnect', service: 'Google') %></span>
     <% end %>
   <%- else %>
