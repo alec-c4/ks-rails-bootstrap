@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <%= link_to "APPLICATION", root_path, class: "navbar-brand" %>
+    <%= link_to "CosmoZoo", root_path, class: "navbar-brand" %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -11,29 +11,29 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Account
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">        
-          <% if current_user.is_admin? %>
-            <li>
-              <%= active_link_to "Admin console", admin_dashboard_path, class: "dropdown-item" %>
-            </li>
-          <% end %>
-          <li>
-            <%= active_link_to t('navigation.profile'), edit_profile_path, class: "dropdown-item" %>
-          </li>
-          <li>
-            <%= active_link_to t('navigation.account'), edit_user_registration_path, class: "dropdown-item" %>
-          </li>
-          <% if current_user != true_user %>
-            <li><%= link_to "Back to admin", stop_impersonating_admin_users_path, data: { turbo_method: :post }, class: "dropdown-item" %></li>
-          <% else %>
-            <li><%= link_to t('navigation.sign_out'), destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %></li>
-          </ul>
-          <% end %>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+              <% if current_user.is_admin? %>
+                <li>
+                  <%= active_link_to "Admin console", admin_dashboard_path, class: "dropdown-item" %>
+                </li>
+              <% end %>
+              <li>
+                <%= active_link_to t('navigation.profile'), edit_profile_path, class: "dropdown-item" %>
+              </li>
+              <li>
+                <%= active_link_to t('navigation.account'), edit_user_registration_path, class: "dropdown-item" %>
+              </li>
+              <% if current_user != true_user %>
+                <li><%= link_to "Back to admin", stop_impersonating_admin_users_path, data: { turbo_method: :post }, class: "dropdown-item" %></li>
+                </ul>
+              <% else %>
+                <li><%= link_to t('navigation.sign_out'), destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %></li>
+                </ul>
+              <% end %>
         <% else %>
           <li class="nav-item me-2">
             <%= link_to t('navigation.sign_up'), new_user_registration_path, class: 'btn btn-primary' %>
           </li>
-
           <li class="nav-item me-2">
             <%= link_to t('navigation.sign_in'), new_user_session_path, class: 'btn btn-secondary' %>
           </li>
