@@ -1,15 +1,16 @@
 <div class="container text-center">
   <ul class="list-inline">
     <li class="list-inline-item">
-    <%= t("application.available_locales_label") %>
-  </li>
-  <% I18n.available_locales.each do |locale| %>
-    <li class="list-inline-item">
-      <% if cookies[:locale].present? %>
-        <%= link_to locale, url_for(locale: locale), class: "#{'active' if locale.to_s == cookies[:locale]}" %>
-      <% else %>
-        <%= link_to locale, url_for(locale: locale), class: "#{'active' if locale.to_s == I18n.default_locale.to_s}" %>
-      <% end %>
+      <%= t("application.available_locales_label") %>
     </li>
-  <% end %>
-</ul>
+    <% I18n.available_locales.each do |locale| %>
+      <li class="list-inline-item">
+        <% if cookies[:locale].present? %>
+          <%= link_to locale, url_for(locale: locale), class: "#{'active' if locale.to_s == cookies[:locale]}" %>
+        <% else %>
+          <%= link_to locale, url_for(locale: locale), class: "#{'active' if locale.to_s == I18n.default_locale.to_s}" %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
