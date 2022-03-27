@@ -93,9 +93,9 @@ def apply_app_changes
     # Mail
     config.action_mailer.delivery_method = :letter_opener_web
     config.action_mailer.default_url_options = {
-      host: Rails.configuration.settings.mailer_default_url_host,
-      port: Rails.configuration.settings.mailer_default_url_port,
-      protocol: Rails.configuration.settings.mailer_default_url_protocol
+      host: URI.parse(Rails.configuration.settings.base_url).host,
+      port: URI.parse(Rails.configuration.settings.base_url).port,
+      protocol: URI.parse(Rails.configuration.settings.base_url).scheme
     }
     config.action_mailer.perform_deliveries = true
 
@@ -135,9 +135,9 @@ def apply_app_changes
 
     # Mailer
     config.action_mailer.default_url_options = {
-      host: Rails.configuration.settings.mailer_default_url_host,
-      port: Rails.configuration.settings.mailer_default_url_port,
-      protocol: Rails.configuration.settings.mailer_default_url_protocol
+      host: URI.parse(Rails.configuration.settings.base_url).host,
+      port: URI.parse(Rails.configuration.settings.base_url).port,
+      protocol: URI.parse(Rails.configuration.settings.base_url).scheme
     }
     RUBY
   end
@@ -151,8 +151,8 @@ def apply_app_changes
       api_token: Rails.application.credentials.postmark[:api_key]
     }
     config.action_mailer.default_url_options = {
-      host: Settings.mailer.default_url.host,
-      protocol: Settings.mailer.default_url.protocol
+      host: URI.parse(Rails.configuration.settings.base_url).host,
+      protocol: URI.parse(Rails.configuration.settings.base_url).scheme
     }
     config.action_mailer.perform_deliveries = true
 
