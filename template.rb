@@ -41,18 +41,9 @@ def apply_app_changes
 
   # setup frontend with timezone support
   run "yarn add jstz local-time"
-  run "yarn add chokidar standard -D"
-  copy_file "esbuild-dev.config.js", force: true
+  run "yarn add standard -D"
   directory "app/javascript", force: true
   copy_file ".erb-lint.yml", force: true
-
-  # setup good_job
-  gsub_file "package.json", /"build": "esbuild app\/javascript\/\*\.\* --bundle --sourcemap --outdir=app\/assets\/builds",\n/ do
-    <<-'CODE'
-"build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
-    "build:js": "node esbuild-dev.config.js",
-    CODE
-  end
 
   # setup good_job
   generate "good_job:install"
@@ -90,6 +81,10 @@ def apply_app_changes
   inject_into_file "config/environments/development.rb",
                    after: /config\.action_cable\.disable_request_forgery_protection = true\n/ do
     <<-'RUBY'
+    
+    # Hotwire LiveReload
+    config.hotwire_livereload.reload_method = :turbo_stream
+
     # Mail
     config.action_mailer.delivery_method = :letter_opener_web
     config.action_mailer.default_url_options = {
@@ -264,14 +259,16 @@ def apply_app_changes
 
   copy_file "config/initializers/devise.rb", force: true
   copy_file "config/initializers/rails_performance.rb", force: true
+  copy_file "config/initializers/better_html.rb", force: true
+  copy_file "config/initializers/rack_attack.rb", force: true
 
   copy_file "public/robots.txt", force: true
 
   # run linters
   run "i18n-tasks normalize"
   run "bundle exec erblint --lint-all -a"
-  run "standard --fix"
-  run "standardrb --fix"
+  run "yarn standard --fix"
+  run "bundle exec standardrb --fix"
 end
 
 def show_post_install_message
