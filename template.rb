@@ -25,6 +25,10 @@ def apply_template!
   # setup lefthook
   copy_file "lefthook.yml", force: true
 
+  copy_file "package.json", force: true
+
+  run "node -v > .nvmrc"
+
   after_bundle do
     apply_app_changes
     show_post_install_message
@@ -34,24 +38,21 @@ end
 def apply_app_changes
   # setup generators
   copy_file "config/initializers/generators.rb", force: true
+
   copy_file "config/initializers/semantic_logger.rb", force: true
+
+  copy_file "config/database.yml.example", force: true
 
   # setup Procfile
   copy_file "Procfile.dev", force: true
 
   # setup frontend with timezone support
+  run "yarn add @hotwired/stimulus @hotwired/turbo-rails @popperjs/core bootstrap bootstrap-icons esbuild sass"
+
   run "yarn add jstz local-time"
   run "yarn add standard -D"
   directory "app/javascript", force: true
   copy_file ".erb-lint.yml", force: true
-
-  # setup good_job
-  generate "good_job:install"
-  inject_into_file "config/application.rb", after: /require "rails\/test_unit\/railtie"\n/ do
-    <<-'RUBY'
-  require "good_job/engine"
-    RUBY
-  end
 
   # setup main configuration
 
@@ -178,6 +179,14 @@ def apply_app_changes
   as_migration_file = (Dir["db/migrate/*_create_active_storage_tables.active_storage.rb"]).first
   copy_file "migrations/active_storage.rb", as_migration_file, force: true
 
+  # setup good_job
+  generate "good_job:install"
+  inject_into_file "config/application.rb", after: /require "rails\/test_unit\/railtie"\n/ do
+    <<-'RUBY'
+  require "good_job/engine"
+    RUBY
+  end
+
   generate "friendly_id"
   friendly_id_migration_file = (Dir["db/migrate/*_create_friendly_id_slugs.rb"]).first
   copy_file "migrations/friendly_id.rb", friendly_id_migration_file, force: true
@@ -244,6 +253,12 @@ def apply_app_changes
   copy_file "config/puma.rb", force: true
   copy_file "config/initializers/active_interaction.rb", force: true
 
+  generate "cypress_on_rails:install"
+  copy_file "cypress/app_commands/scenarios/sign_in.rb", force: true
+  directory "cypress/e2e/users", force: true
+  copy_file "cypress/support/commands.js", force: true
+  copy_file "Procfile.cypress", force: true
+
   directory "db/seeds", force: true
   copy_file "db/seeds.rb", force: true
 
@@ -261,6 +276,8 @@ def apply_app_changes
   copy_file "config/initializers/rails_performance.rb", force: true
   copy_file "config/initializers/better_html.rb", force: true
   copy_file "config/initializers/rack_attack.rb", force: true
+
+  copy_file "rails_best_practices.yml", force: true
 
   copy_file "public/robots.txt", force: true
 
