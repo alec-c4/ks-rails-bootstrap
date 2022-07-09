@@ -1,4 +1,8 @@
-<%= form_with(local: true, method: :get, url: { action: "index" }, class: "my-3 flex gap-3") do |form| %>
-  <%= form.text_field :query, value: params[:query].presence && params[:query], placeholder: 'Search users' %>
-  <%= form.submit "Search", class: "btn btn-primary" %>
+<%= form_with(local: true, method: :get, url: { action: "index" }, class: "my-3 row justify-content-between") do |form| %>
+  <div class="col-10">
+    <%= form.text_field :query, value: params[:query].presence && params[:query], placeholder: 'Search users', class: "form-control" %>
+  </div>
+  <div class="col-2">
+    <%= form.submit "Search", class: "btn btn-primary" %>
+  </div>
 <% end %>

@@ -22,7 +22,12 @@
       <%= render "layouts/header" %>
     </header>
     <main class="container">
+      <div class="my-3">
+        <%= breadcrumbs style: :bootstrap5, display_single_fragment: true %>
+      </div>
+
       <%= render Elements::FlashComponent.new %>
+      
       <%= yield %>
     </main>
     <footer>

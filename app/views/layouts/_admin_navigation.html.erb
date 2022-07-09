@@ -1,5 +1,8 @@
 <nav>
-  <ul class="flex justify-start gap-4">
+  <ul class="nav flex-column my-3">
+    <li>
+      <%= active_link_to "Dashboard", admin_dashboard_path %>
+    </li>
     <li>
       <%= active_link_to "Users management", admin_users_path %>
     </li>
@@ -7,7 +10,7 @@
 </nav>
 
 <nav>
-  <ul class="flex justify-start gap-4">
+  <ul class="nav flex-column">
     <li>
       <%= link_to "Good Job", good_job_path %>
     </li>

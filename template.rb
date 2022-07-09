@@ -252,9 +252,10 @@ def apply_app_changes
   copy_file "config/routes.rb", force: true
   copy_file "config/puma.rb", force: true
   copy_file "config/initializers/active_interaction.rb", force: true
+  directory "config/breadcrumbs", force: true
 
   generate "cypress_on_rails:install"
-  copy_file "cypress/app_commands/scenarios/sign_in.rb", force: true
+  directory "cypress/app_commands/scenarios", force: true
   directory "cypress/e2e/users", force: true
   copy_file "cypress/support/commands.js", force: true
   copy_file "Procfile.cypress", force: true
@@ -280,6 +281,9 @@ def apply_app_changes
   copy_file "rails_best_practices.yml", force: true
 
   copy_file "public/robots.txt", force: true
+
+  directory "docs", force: true
+  copy_file ".erdconfig", force: true
 
   # run linters
   run "i18n-tasks normalize"
