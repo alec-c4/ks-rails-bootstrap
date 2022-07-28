@@ -1,5 +1,5 @@
 <nav>
-  <ul class="nav flex-column my-3">
+  <ul class="my-3 nav flex-column">
     <li>
       <%= active_link_to "Dashboard", admin_dashboard_path %>
     </li>
@@ -10,7 +10,7 @@
 </nav>
 
 <nav>
-  <ul class="nav flex-column">
+  <ul class="my-3 nav flex-column">
     <li>
       <%= link_to "Good Job", good_job_path %>
     </li>
@@ -22,6 +22,19 @@
     </li>
     <li>
       <%= link_to "Pg Hero", pg_hero_path %>
-    </li>      
+    </li>
   </ul>
 </nav>
+
+<% if Rails.env.development? %>
+  <nav>
+    <ul class="my-3 nav flex-column">
+      <li>
+        <%= link_to "Lookbook", lookbook_path %>
+      </li>
+      <li>
+        <%= link_to "Letter opener", letter_opener_web_path %>
+      </li>
+    </ul>
+  </nav>
+<% end %>

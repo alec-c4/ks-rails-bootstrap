@@ -66,6 +66,9 @@ def apply_app_changes
 
   copy_file "config/initializers/pagy.rb", force: true
 
+  copy_file "config/initializers/view_component.rb", force: true
+  
+
   inject_into_file "config/application.rb", after: /config\.generators\.system_tests = nil\n/ do
     <<-'RUBY'
   # use config file
@@ -267,6 +270,7 @@ def apply_app_changes
   generate "rspec:install"
   directory "spec", force: true
   copy_file ".rspec", force: true
+  copy_file "lib/tasks/factory_bot.rake", force: true
 
   # setup db related gems
   generate "hypershield:install"
