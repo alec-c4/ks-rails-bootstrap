@@ -275,7 +275,7 @@ def apply_app_changes
   # setup db related gems
   generate "hypershield:install"
   generate "annotate:install"
-  generate "strong_migrations:install"
+  generate "online_migrations:install"
 
   copy_file "config/initializers/devise.rb", force: true
   copy_file "config/initializers/rails_performance.rb", force: true
